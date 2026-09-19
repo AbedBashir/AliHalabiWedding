@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <title>Wedding of Ali &amp; Nohad</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #b8986a;
+      --gold-light: #d4b896;
+      --cream: #faf6f0;
+      --dark: #2c2416;
+      --text: #4a3f2f;
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      width: 100%;
+      background: var(--dark);
+      font-family: 'Cormorant Garamond', serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* SPLASH */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.8s ease;
+    }
+
+    #splash.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .splash-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3rem, 12vw, 6rem);
+      color: var(--gold-light);
+      text-align: center;
+      line-height: 1.1;
+      animation: fadeUp 1.2s ease forwards;
+      opacity: 0;
+    }
+
+    .splash-amp {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 5vw, 2rem);
+      color: var(--gold);
+      display: block;
+      margin: 0.3em 0;
+      letter-spacing: 0.3em;
+      font-style: italic;
+    }
+
+    .splash-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      margin-top: 2rem;
+      animation: fadeUp 1.5s 0.4s ease forwards;
+      opacity: 0;
+    }
+
+    .tap-pulse {
+      margin-top: 3rem;
+      width: 56px;
+      height: 56px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite, fadeUp 1.5s 0.8s ease forwards;
+      opacity: 0;
+    }
+
+    .tap-pulse svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--gold);
+    }
+
+    .tap-label {
+      margin-top: 0.8rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.35);
+      text-transform: uppercase;
+      animation: fadeUp 1.5s 1s ease forwards;
+      opacity: 0;
+    }
+
+    /* MUSIC */
+    .music-btn {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 200;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(44, 36, 22, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(184, 152, 106, 0.3);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .music-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--gold);
+    }
+
+    /* MAIN */
+    #main {
+      display: none;
+    }
+
+    #main.visible {
+      display: block;
+    }
+
+    /* SECTIONS */
+    .sec {
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+    }
+
+    .sec-dark {
+      background: var(--dark);
+    }
+
+    .sec-cream {
+      background: var(--cream);
+    }
+
+    .sec-white {
+      background: var(--white);
+    }
+
+    .inner {
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.on {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: 0.1s
+    }
+
+    .d2 {
+      transition-delay: 0.2s
+    }
+
+    .d3 {
+      transition-delay: 0.3s
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100svh;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(44, 36, 22, 0.9) 100%), url('./src/banner.png') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem 5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    @media(max-width:600px) {
+      #hero {
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(44, 36, 22, 0.9) 100%), url('./src/landscapeAN.png') center/cover no-repeat;
+      }
+    }
+
+    .hero-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-names {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.5rem, 13vw, 6.5rem);
+      color: var(--white);
+      line-height: 1.05;
+    }
+
+    .hero-amp {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      color: var(--gold);
+      letter-spacing: 0.5em;
+      font-style: italic;
+      margin: 0.3em 0;
+    }
+
+    .hero-tagline {
+      margin-top: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      color: rgba(255, 255, 255, 0.45);
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 130px;
+      margin: 1.4rem auto;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .divider span {
+      flex: 1;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .divider svg {
+      width: 12px;
+      height: 12px;
+      fill: var(--gold);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .scroll-hint p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.5rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 28px;
+      background: var(--gold);
+      opacity: 0.3;
+      animation: lineAnim 2s ease-in-out infinite;
+    }
+
+    /* TYPOGRAPHY */
+    .sec-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+      display: block;
+    }
+
+    .sec-label.lt {
+      color: var(--gold-light);
+    }
+
+    .script {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.2rem, 9vw, 3rem);
+      line-height: 1.1;
+    }
+
+    /* VERSE */
+    .verse-block {
+      border-left: 2px solid var(--gold);
+      padding-left: 1.1rem;
+      text-align: left;
+      margin: 1rem auto;
+      max-width: 290px;
+    }
+
+    .verse-text {
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .verse-ref {
+      margin-top: 0.4rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    /* INVITE */
+    .invite-fam {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .invite-body {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .invite-couple {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.4rem, 9vw, 3.2rem);
+      color: var(--dark);
+      line-height: 1.1;
+      margin: 0.3rem 0;
+    }
+
+    .invite-date {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-top: 0.2rem;
+    }
+
+    /* PHOTO */
+    #photo {
+      background: var(--dark);
+      position: relative;
+      line-height: 0;
+    }
+
+    #photo img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .desktop__only {
+      display: block
+    }
+
+    .mobile__only {
+      display: none
+    }
+
+    @media(max-width:768px) {
+      .desktop__only {
+        display: none
+      }
+
+      .mobile__only {
+        display: block
+      }
+    }
+
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(44, 36, 22, 0.65) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 2rem;
+    }
+
+    .photo-caption {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8rem;
+      color: var(--white);
+      opacity: 0.85;
+    }
+
+    /* CEREMONY */
+    .ceremony-card {
+      background: var(--white);
+      border: 1px solid rgba(184, 152, 106, 0.25);
+      border-radius: 2px;
+      padding: 2rem 1.6rem;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.07);
+      position: relative;
+      max-width: 290px;
+      margin: 0.8rem auto 0;
+    }
+
+    .ceremony-card::before {
+      content: '✦';
+      position: absolute;
+      top: 0.7rem;
+      left: 0.7rem;
+      color: var(--gold);
+      font-size: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .ceremony-card::after {
+      content: '✦';
+      position: absolute;
+      bottom: 0.7rem;
+      right: 0.7rem;
+      color: var(--gold);
+      font-size: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .cer-detail {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 2.1;
+    }
+
+    .cer-venue {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--dark);
+      margin: 0.25rem 0 0.1rem;
+    }
+
+    .map-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 1.2rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .map-btn:hover {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    .map-btn svg {
+      width: 11px;
+      height: 11px;
+      fill: currentColor;
+    }
+
+    /* COUNTDOWN */
+    .cd-grid {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+
+    .cd-item {
+      text-align: center;
+    }
+
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 9vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      display: block;
+    }
+
+    .cd-lbl {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.48rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    .cd-sep {
+      font-size: 1.8rem;
+      color: var(--gold);
+      opacity: 0.3;
+      align-self: flex-start;
+      margin-top: 0.35rem;
+      line-height: 1;
+    }
+
+    /* GIFTS */
+    .gifts-intro {
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 1.1rem;
+      opacity: 0.85;
+    }
+
+    .gift-card {
+      background: var(--white);
+      border: 1px solid rgba(184, 152, 106, 0.2);
+      border-radius: 2px;
+      padding: 1.1rem;
+      box-shadow: 0 3px 18px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      margin-bottom: 0.8rem;
+    }
+
+    .gift-head {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .gift-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .gift-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--white);
+    }
+
+    .gift-method {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.52rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+    }
+
+    .gift-bank {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .gift-field {
+      margin-top: 0.5rem;
+    }
+
+    .gift-lbl {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.48rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(74, 63, 47, 0.4);
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+
+    .gift-row {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--cream);
+      border: 1px solid rgba(184, 152, 106, 0.15);
+      border-radius: 2px;
+      padding: 0.4rem 0.65rem;
+    }
+
+    .gift-val {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem;
+      color: var(--dark);
+      flex: 1;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.15rem;
+      display: flex;
+      align-items: center;
+      color: var(--gold);
+      transition: color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      color: var(--dark);
+    }
+
+    .copy-btn svg {
+      width: 13px;
+      height: 13px;
+      fill: currentColor;
+    }
+
+    /* TOAST */
+    .copy-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--dark);
+      color: var(--gold-light);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.2rem;
+      border-radius: 2px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 999;
+      white-space: nowrap;
+      border: 1px solid rgba(184, 152, 106, 0.2);
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(184, 152, 106, 0.4)
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(184, 152, 106, 0)
+      }
+    }
+
+    @keyframes lineAnim {
+
+      0%,
+      100% {
+        opacity: 0.15
+      }
+
+      50% {
+        opacity: 0.4
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="bgMusic" loop>
+    <source src="https://api.inviteme.events/uploads/Umberto_Tozzi_e_Monica_Bellucci_Ti_Amo_mp3cut_net_6899d3e8c6.mp3"
+      type="audio/mpeg" />
+  </audio>
+
+  <div id="splash">
+    <div class="splash-names">Ali<span class="splash-amp">&amp;</span>Nohad</div>
+    <p class="splash-subtitle">Are Getting Married</p>
+    <div class="tap-pulse"><svg viewBox="0 0 24 24">
+        <path d="M10 8v8l6-4-6-4z" />
+      </svg></div>
+    <p class="tap-label">Tap to open</p>
+  </div>
+
+  <button class="music-btn" id="musicBtn">
+    <svg id="musicPlay" viewBox="0 0 24 24">
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+    </svg>
+    <svg id="musicPause" viewBox="0 0 24 24" style="display:none">
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+    </svg>
+  </button>
+
+  <div class="copy-toast" id="copyToast">✦ &nbsp; Copied &nbsp; ✦</div>
+
+  <div id="main">
+
+    <section id="hero">
+      <div class="reveal">
+        <p class="hero-date">August 15, 2026 · Jiyyeh, Lebanon</p>
+        <h1 class="hero-names">Ali<span class="hero-amp">&amp;</span>Nohad</h1>
+        <p class="hero-tagline">Are Getting Married</p>
+        <div class="divider"><span></span><svg viewBox="0 0 24 24">
+            <path
+              d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z" />
+          </svg><span></span></div>
+      </div>
+      <div class="scroll-hint">
+        <p>Scroll</p>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <section class="sec sec-cream">
+      <div class="inner">
+        <span class="sec-label reveal">A Word of Love</span>
+        <p class="script reveal d1" style="color:var(--gold);margin-bottom:0.9rem">وَالطَّيِّبَاتُ لِلطَّيِّبِينَ</p>
+        <div class="verse-block reveal d2">
+          <p class="verse-text" dir="rtl" lang="ar">﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا
+            لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ
+            يَتَفَكَّرُونَ﴾</p>
+          <p class="verse-ref">[الروم: 21]</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-cream">
+      <div class="inner">
+        <span class="sec-label reveal">The Invitation</span>
+        <p class="invite-fam reveal d1">Halabi &amp; Hajj Families</p>
+        <p class="invite-body reveal d1">With joyous hearts invite you to celebrate the wedding of</p>
+        <p class="invite-couple reveal d2">Ali<br>&amp;<br>Nohad</p>
+        <p class="invite-date reveal d3">Saturday · August 15, 2026</p>
+      </div>
+    </section>
+
+    <section id="photo">
+      <img src="./src/abednohad1.png" alt="Ali and Nohad" class="desktop__only" />
+      <!--<img src="./src/abednohad2.png" alt="Ali and Nohad" class="mobile__only"/>-->
+      <div class="photo-overlay">
+        <p class="photo-caption reveal">♡ Together Forever ♡</p>
+      </div>
+    </section>
+
+    <section class="sec sec-white">
+      <div class="inner">
+        <span class="sec-label reveal">Ceremony</span>
+        <div class="ceremony-card reveal d1">
+          <p class="script" style="color:var(--gold);font-size:1.9rem;margin-bottom:0.8rem">Join Us</p>
+          <div class="cer-detail">August 15, 2026 &nbsp;·&nbsp; 7:00 PM</div>
+          <div class="cer-venue">L'or Wedding Venue</div>
+          <div class="cer-detail">Jiyyeh, Lebanon</div>
+          <a class="map-btn" href="https://maps.app.goo.gl/REYLrc7iF3ftvgby6" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+            </svg>
+            View Location
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-dark">
+      <div class="inner">
+        <span class="sec-label lt reveal">Counting Down</span>
+        <p class="script reveal d1" style="color:var(--white);margin-bottom:0.15rem">The Big Day</p>
+        <p class="reveal d1"
+          style="font-family:'Montserrat',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:1rem">
+          August 15, 2026</p>
+        <div class="cd-grid reveal d2">
+          <div class="cd-item"><span class="cd-num" id="cdDays">--</span><span class="cd-lbl">Days</span></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item"><span class="cd-num" id="cdHours">--</span><span class="cd-lbl">Hours</span></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item"><span class="cd-num" id="cdMins">--</span><span class="cd-lbl">Min</span></div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item"><span class="cd-num" id="cdSecs">--</span><span class="cd-lbl">Sec</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-cream">
+      <div class="inner">
+        <span class="sec-label reveal">Wedding Gifts</span>
+        <p class="script reveal d1" style="color:var(--dark);margin-bottom:0.5rem">Your Generosity</p>
+        <p class="gifts-intro reveal d2">Your presence is our greatest gift. If you wish to honor us, you may give via:
+        </p>
+        <div class="gift-card reveal d2">
+          <div class="gift-head">
+            <div class="gift-icon"><svg viewBox="0 0 24 24">
+                <path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zm-5 9H2v2h20v-2H5zm11-9v7h3v-7h-3zM12 1L2 6v2h20V6L12 1z" />
+              </svg></div>
+            <div><span class="gift-method">Bank Transfer</span><span class="gift-bank">Bank Audi - Neo</span></div>
+          </div>
+          <div class="gift-field"><span class="gift-lbl">Account Name</span>
+            <div class="gift-row"><span class="gift-val">Ali Halabi</span><button class="copy-btn"
+                onclick="copyText('Ali Halabi')"><svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                </svg></button></div>
+          </div>
+          <div class="gift-field"><span class="gift-lbl">IBAN</span>
+            <div class="gift-row"><span class="gift-val">LB38 0056 9984 0103 5013 4581 0002 9114</span><button
+                class="copy-btn" onclick="copyText('LB38005699840103501345810002')"><svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2zm0 16H8V7h11v14z" />
+                </svg></button></div>
+          </div>
+          <div class="gift-field"><span class="gift-lbl">Swift / BIC</span>
+            <div class="gift-row"><span class="gift-val">AUDBLBBX</span><button class="copy-btn"
+                onclick="copyText('AUDBLBBX')"><svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2zm0 16H8V7h11v14z" />
+                </svg></button></div>
+          </div>
+        </div>
+        <div class="gift-card reveal d3">
+          <div class="gift-head">
+            <div class="gift-icon" style="background:#fff;border:1px solid #e3e3e3">
+              <svg width="22" height="8" viewBox="0 0 67 24" fill="none">
+                <path
+                  d="M66.4109 2.94C66.2609 1.45 65.071 0.26 63.531 0.05C62.041 -0.15 60.811 0.63 60.271 2.11C59.751 3.56 59.291 5.06 58.851 6.51C58.661 7.12 58.481 7.74 58.291 8.35C58.001 9.26 57.721 10.17 57.441 11.08L57.201 11.84H57.171L56.861 10.98C56.591 10.22 56.321 9.46 56.041 8.71C55.821 8.11 55.601 7.51 55.381 6.91C54.761 5.22 54.121 3.47 53.431 1.77C52.971 0.64 51.9909 0.02 50.6409 0.02C49.3009 0.03 48.341 0.64 47.791 1.85C47.521 2.44 47.3009 2.97 47.1209 3.47C46.3509 5.61 45.5809 7.75 44.8209 9.89L44.1209 11.85H44.0509L43.951 11.55C43.831 11.2 43.711 10.84 43.591 10.48C43.311 9.62 43.0309 8.75 42.7509 7.88C42.1609 6.04 41.5409 4.14 40.9109 2.28C40.4309 0.87 39.3709 0.02 38.0709 0.02C38.0509 0.02 38.031 0.02 38.011 0.02C37.991 0.02 37.9809 0 37.9609 0H24.061C23.961 0 23.881 0.0699998 23.871 0.16C23.861 0.25 23.9109 0.34 24.0009 0.37L34.701 3.55H7.27095C7.17095 3.55 7.09095 3.63 7.08095 3.73C7.08095 3.86 7.15095 3.94 7.25095 3.96L35.151 7.67H0.19095C0.0909501 7.67 0.0109501 7.75 0.000950078 7.85C-0.00904992 7.95 0.0609502 8.04 0.16095 8.05L37.261 13.59H14.6109C14.5109 13.59 14.4309 13.66 14.4209 13.76C14.4109 13.86 14.481 13.95 14.571 13.97L39.471 18.6H24.711C24.611 18.6 24.531 18.67 24.521 18.77C24.511 18.86 24.5709 18.96 24.6609 18.98L42.991 23.51C43.081 23.54 43.171 23.56 43.261 23.58L43.451 23.62C43.471 23.62 43.4809 23.63 43.5009 23.63C43.681 23.65 43.851 23.67 44.031 23.67C45.411 23.67 46.3709 23.03 46.8709 21.76C47.4309 20.35 47.981 18.94 48.531 17.53L48.861 16.68C49.241 15.7 49.621 14.72 50.041 13.66L50.6209 12.17C50.6609 12.25 50.691 12.33 50.721 12.4C50.871 12.73 50.9709 12.97 51.0709 13.21C51.4309 14.11 51.7909 15.01 52.1409 15.91C52.8909 17.82 53.6709 19.79 54.4809 21.72C55.0109 22.98 56.081 23.73 57.361 23.73C57.741 23.73 58.121 23.66 58.491 23.52C59.751 23.06 60.241 21.94 60.591 20.94C62.291 16.11 64.051 11 66.141 4.85C66.301 4.35 66.4809 3.63 66.4109 2.94Z"
+                  fill="#FF003E" />
+              </svg>
+            </div>
+            <div><span class="gift-method">Whish Money</span><span class="gift-bank">Mobile Transfer · Whish
+                Money</span></div>
+          </div>
+          <div class="gift-field"><span class="gift-lbl">Whish Number</span>
+            <div class="gift-row"><span class="gift-val">+961 76 757 831</span><button class="copy-btn"
+                onclick="copyText('+96176757831')"><svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2zm0 16H8V7h11v14z" />
+                </svg></button></div>
+          </div>
+          <div class="gift-field"><span class="gift-lbl">Registered Name</span>
+            <div class="gift-row"><span class="gift-val">Ali Halabi</span><button class="copy-btn"
+                onclick="copyText('Ali Halabi')"><svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2zm0 16H8V7h11v14z" />
+                </svg></button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // MUSIC
+    const music = document.getElementById('bgMusic');
+    let playing = true;
+    function setIcon(p) {document.getElementById('musicPlay').style.display = p ? 'block' : 'none'; document.getElementById('musicPause').style.display = p ? 'none' : 'block';}
+    document.getElementById('musicBtn').addEventListener('click', () => {playing ? music.pause() : music.play(); playing = !playing; setIcon(playing);});
+
+    // COUNTDOWN
+    function startCountdown() {
+      const t = new Date('2026-08-15T19:00:00');
+      function tick() {const d = Math.abs(t - new Date()), f = n => String(Math.floor(n)).padStart(2, '0'); document.getElementById('cdDays').textContent = f(d / 864e5); document.getElementById('cdHours').textContent = f((d % 864e5) / 36e5); document.getElementById('cdMins').textContent = f((d % 36e5) / 6e4); document.getElementById('cdSecs').textContent = f((d % 6e4) / 1e3);}
+      tick(); setInterval(tick, 1000);
+    }
+
+    // REVEAL
+    function initReveal() {const obs = new IntersectionObserver(e => e.forEach(x => {if (x.isIntersecting) x.target.classList.add('on');}), {threshold: 0.12}); document.querySelectorAll('.reveal').forEach(el => obs.observe(el));}
+
+    // COPY
+    const toast = document.getElementById('copyToast'); let tt;
+    function copyText(t) {navigator.clipboard.writeText(t).then(() => {clearTimeout(tt); toast.classList.add('show'); tt = setTimeout(() => toast.classList.remove('show'), 2000);});}
+
+    // BOOT
+    document.getElementById('splash').addEventListener('click', () => {
+      document.getElementById('splash').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('main').classList.add('visible');
+        document.getElementById('musicBtn').style.display = 'flex';
+        initReveal();
+        startCountdown();
+        music.play().catch(() => { });
+        setIcon(true);
+      }, 800);
+    });
+  </script>
+</body>
+
+</html>
