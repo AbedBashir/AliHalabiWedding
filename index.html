@@ -874,7 +874,7 @@
       <div class="reveal">
 
         <p class="hero-date">
-          15 آب 2026 · مغدوشة، صيدا
+          3 تشرين الأول 2026 · مغدوشة، صيدا
         </p>
 
         <h1 class="hero-names">
@@ -972,7 +972,7 @@
         </p>
 
         <p class="invite-date reveal d3">
-          السبت · 15 آب 2026
+          السبت · 3 تشرين الأول 2026
         </p>
 
       </div>
@@ -1016,7 +1016,7 @@
           </p>
 
           <div class="cer-detail">
-            15 آب 2026 &nbsp;·&nbsp; 7:00 مساءً
+            3 تشرين الأول 2026 &nbsp;·&nbsp; 7:00 مساءً
           </div>
 
           <div class="cer-venue">
@@ -1066,7 +1066,7 @@
             color:rgba(255,255,255,0.35);
             margin-bottom:1rem;
           ">
-          15 آب 2026
+          3 تشرين الأول 2026
         </p>
 
         <div class="cd-grid reveal d2">
@@ -1256,11 +1256,12 @@
 
     function startCountdown() {
 
-      const t = new Date('2026-08-15T19:00:00');
+      const t = new Date('2026-10-03T19:00:00');
 
       function tick() {
 
-        const d = Math.abs(t - new Date());
+        const diff = t - new Date();
+        const d = Math.max(0, diff);
 
         const f = n =>
           String(Math.floor(n)).padStart(2, '0');
